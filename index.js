@@ -7,12 +7,12 @@ const PORT = process.env["PORT"];
 app.use(express.static("public"));
 
 app.route("/api/whoami").get((req, res) => {
-    const ipAddress = req.ip;
     const language = req.headers["accept-language"];
     const software = req.headers["user-agent"];
+    let ipAddress = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
     res.json({
-        ipAddress: ipAddress.replace("::ffff:", ""),
+        ipAddress: ipAddress,
         language: language,
         software: software,
     });
