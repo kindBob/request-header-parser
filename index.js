@@ -9,7 +9,8 @@ app.use(express.static("public"));
 app.route("/api/whoami").get((req, res) => {
     const language = req.headers["accept-language"];
     const software = req.headers["user-agent"];
-    let ipAddress = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    const forwardedIp = req.headers["x-forwarded-for"];
+    let ipAddress = forwardedIp ? forwardedIp.split(",")[0] : req.connection.remoteAddress;
 
     res.json({
         ipAddress: ipAddress,
